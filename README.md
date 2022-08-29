@@ -1,23 +1,5 @@
 
 
-# Explicación
-Las decisiones que fuí tomando fueron en base a la estética que quería que tomará esta prueba, usé React Bootstrap y me valí 
-de lo que este ofrece para hacer este challenge más adecuado a lo que pedía.
-En cuanto al esfuerzo le he puesto mucho empeño a que el código se vea más agradable ante el ojo humano, tuve que empezar el proyecto
-sin ningun lineamiento, más bien fue todo inspiración y fuí improvisando a medida que todas las piezas iban encajando, en pocas palabras, quise
-dejar todo de mi, este proyecto cuenta
-con Redux lo que lo hace más liviano a diferencia del uso excesivo de states, tuve un par de complicaciones con el storage, por lo que lo he
-dejado en pendiente para solucionarlo luego, el problema es cuando queremos "cambiar" el rango de días, pues este valor no se verá reflejado al mostrar el
-modal, sino que será visto hasta que recarguemos la página.
-En cuanto a la vista de detalle, donde aparece el formulario con la ayuda de un condicional si no detecta información en el storage redireccionará
-a la página principal.
-El esfuerzo que le pongo a los retos no lo suelo nivelar, ya que todo es cuestión de trayectoria, puede o no haber cosas nuevas en donde te trabas, como
-por ejemplo, en Redux tuve un problema ya que quería despachar 2 acciones, la solución era tratarlos como promesas https://stackoverflow.com/questions/44321676/where-to-dispatch-multiple-actions-in-redux
-
-
-
-
-
 
 # Getting Started with Create React App
 
