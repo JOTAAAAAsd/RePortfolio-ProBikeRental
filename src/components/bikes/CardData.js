@@ -14,8 +14,6 @@ import { calculatePrice } from "../../HELPERS/calculatePrice";
 // Routing
 import { Link } from "react-router-dom";
 
-
-
 const CardData = (props) => {
 
     // console.log(props); 
@@ -24,7 +22,7 @@ const CardData = (props) => {
 
     // console.log(data);
 
-    const [useRentBy, setRentBy] = useState(0);
+    const [useRentBy, setRentBy] = useState(1);
     const [usePriceTotalRent, setPriceTotalRent] = useState(10);
 
     const onChangeRentBy = (e) => {
@@ -32,7 +30,9 @@ const CardData = (props) => {
     }
 
 
-    const onResetData = () => {
+    const onResetData = (u, s, d) => {
+
+        calculatePrice(u, s, d)
         dispatch(action_resetData());
     }
 
@@ -47,33 +47,28 @@ const CardData = (props) => {
             <Image className=" h-100 card_img_item" fluid={true} thumbnail={true} src={data.image_bike} alt={data.name_bike} />
 
             <Card.Body>
-                <Card.Title style={{color:"#9796ab"}}>{data.name_bike}</Card.Title>
+                <Card.Title style={{ color: "#9796ab" }}>{data.name_bike}</Card.Title>
                 <Card.Text>
                     Some quick example text to build on the card title and make up the
                     bulk of the card's content.
                 </Card.Text>
 
-                <Form.Label  style={{color:"#9796ab"}}><b>Rent by</b> {useRentBy} {useRentBy <= 1 ? "day" : "days"}
-                    <Form.Range name="useRentBy" onChange={onChangeRentBy} value={useRentBy} onClick={() => calculatePrice(useRentBy, setPriceTotalRent, data)} />
+                <Form.Label style={{ color: "#9796ab" }}><b>Rent by</b> {useRentBy} {useRentBy <= 1 ? "day" : "days"}
+                    <Form.Range min={1} max={31} name="useRentBy" onChange={onChangeRentBy} value={useRentBy} onClick={() => calculatePrice(useRentBy, setPriceTotalRent, data)} />
                 </Form.Label>
+ 
+                <div className="mb-3" style={{ color: "#1bb76e" }}>
+                    <TbReportMoney style={{ fontSize: "2em" }} /> ${usePriceTotalRent},00 USD
+                </div>
 
-                {useRentBy <= 0 ? null : <>
-
-                    <div className="mb-3" style={{color:"#1bb76e"}}>
-                        <TbReportMoney style={{ fontSize: "2em" }} /> ${usePriceTotalRent},00 USD
+                <Link to={`/complete-rent/${data.id}`} style={{ textDecoration: "none" }}>
+                    <div className="d-grid gap-2">
+                        <Button className="btn1" onMouseDown={(e) => e.preventDefault()} onClick={() => onResetData(useRentBy, setPriceTotalRent, data)}>
+                            Ready?
+                        </Button>{' '}
                     </div>
-
-                    <Link to={`/complete-rent/${data.id}`} style={{ textDecoration: "none" }}>
-                        <div className="d-grid gap-2">
-                            <Button className="btn1" onMouseDown={(e) => e.preventDefault()} onClick={onResetData}>
-                                Ready?
-                            </Button>{' '}
-                        </div>
-                    </Link>
-
-                </>
-                }
-
+                </Link>
+ 
             </Card.Body>
 
         </Card>

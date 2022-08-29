@@ -39,16 +39,16 @@ const FormComplete = () => {
     const { firstname, lastname, email, phone } = input_data;
 
     // State
-    const [useRentBy, setRentBy] = useState(0);
+    const [useRentBy, setRentBy] = useState(1);
     const [usePriceTotalRent, setPriceTotalRent] = useState(0);
 
     const [useModalDataDetails, setModalDataDetails] = useState([]);
     const [useIsOpenModal, setIsOpenModal] = useState(false);
 
+    var data_bike_storage = JSON.parse(localStorage.getItem('data_bike_storage'));
+
 
     useEffect(() => {
-
-        var data_bike_storage = JSON.parse(localStorage.getItem('data_bike_storage'));
 
 
         if (data_bike_storage) {
@@ -111,9 +111,9 @@ const FormComplete = () => {
     }
 
 
-    var data_bike_storage = JSON.parse(localStorage.getItem('data_bike_storage'));
+    // console.log(!data_bike_storage?.bike_type);
 
-    if (!data_bike_storage) {
+    if (!data_bike_storage?.bike_type) {
         window.location.href = "/";
 
     } else {
@@ -200,7 +200,7 @@ const FormComplete = () => {
 
                                             <Card.Text>
                                                 <b>Change rent:</b> {useRentBy} {useRentBy <= 1 ? "day" : "days"}
-                                                <Form.Range name="useRentBy" onChange={onChangeRentBy} value={useRentBy} onClick={() => calculatePrice(useRentBy, setPriceTotalRent)} />
+                                                <Form.Range min={1} max={31} name="useRentBy" onChange={onChangeRentBy} value={useRentBy} onClick={() => calculatePrice(useRentBy, setPriceTotalRent)} />
                                             </Card.Text>
                                         </Card.Body>
                                     </Card>
@@ -228,7 +228,8 @@ const FormComplete = () => {
 
         )
     }
-
 }
+
+
 
 export default FormComplete;
