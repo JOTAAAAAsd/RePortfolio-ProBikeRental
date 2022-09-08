@@ -3,13 +3,13 @@
 # Explicación
 Este proyecto fue de un challenge el cual lo he realizado para la empresa Grow Pro, la cual nunca obtuve respuesta sobre este challenge, pero más allá de esa cuestión me gustó mucho realizarlo, fue muy entretenido.
 El challenge consta de un rentado de bicicletas, donde el usuario interesado en adquirir una bicicleta va a tener que brindar sus datos personales, la cantidad de día que quiere alquilarla partiendo de la fecha que inicia el alquiler, ya que dependiendo de que si se está alquilando antes del 15 de cada mes su valor cambiará, también dependiendo de su modelo el precio de rentado se congelará por un período de días, el enunciado pedía que sean de 3 días para una bicicleta normal y 5 días para una bicicleta antigua, luego pasado este período se lo sumará con el valor de alquilar correspondiente.
-Este proyecto lo he realizado con REDUX para centralizar los estados y hacerlo lo más prolijo posible, también se pedía el uso del localStorage para almacenar la información de la bicicleta y/o usuario.
+Este proyecto lo he realizado con REDUX para centralizar los estados y hacerlo lo más prolijo posible, también se pedía el uso del localStorage para almacenar la información de la bicicleta y/o usuario, diseño responsivo y el uso de React Router Dom.
  
  
 ### Instalación:
 - **npm install**
 
-### Ejecución en el puerto 4000:
+### Ejecución en el puerto 3000:
 - **npm start** 
 
 ### Paquetes usados:
