@@ -1,15 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 
 // Bootstrap
 import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image'
 
 // Icons
-import { TbReportMoney } from "react-icons/tb";
 import { GrBike } from "react-icons/gr";
-import { calculatePrice } from "../../HELPERS/calculatePrice";
 
 // Routing
 import { Link } from "react-router-dom";
@@ -18,22 +15,17 @@ const CardData = (props) => {
 
     // console.log(props); 
 
-    const { data, dispatch, action_resetData } = props;
+    const { data } = props;
 
     // console.log(data);
 
-    const [useRentBy, setRentBy] = useState(1);
-    const [usePriceTotalRent, setPriceTotalRent] = useState(10);
-
-    const onChangeRentBy = (e) => {
-        setRentBy(Number.parseInt(e.target.value));
-    }
-
-
-    const onResetData = (u, s, d) => {
-
-        calculatePrice(u, s, d)
-        dispatch(action_resetData());
+    const onStoredData = (e) => {
+        // console.log(e);
+        localStorage.setItem('data_bike_storage', JSON.stringify({
+            id: e.id,
+            bike_type: e.bike_type,
+            name_bike: e.name_bike
+        }));
     }
 
     return (
@@ -53,22 +45,15 @@ const CardData = (props) => {
                     bulk of the card's content.
                 </Card.Text>
 
-                <Form.Label style={{ color: "#9796ab" }}><b>Rent by</b> {useRentBy} {useRentBy <= 1 ? "day" : "days"}
-                    <Form.Range min={1} max={31} name="useRentBy" onChange={onChangeRentBy} value={useRentBy} onClick={() => calculatePrice(useRentBy, setPriceTotalRent, data)} />
-                </Form.Label>
- 
-                <div className="mb-3" style={{ color: "#1bb76e" }}>
-                    <TbReportMoney style={{ fontSize: "2em" }} /> ${usePriceTotalRent},00 USD
-                </div>
 
-                <Link to={`/complete-rent/${data.id}`} style={{ textDecoration: "none" }}>
+                <Link to={`/complete-rent/${data.id}`} style={{ textDecoration: "none" }} onClick={() => onStoredData(data)} >
                     <div className="d-grid gap-2">
-                        <Button className="btn1" onMouseDown={(e) => e.preventDefault()} onClick={() => onResetData(useRentBy, setPriceTotalRent, data)}>
+                        <Button className="btn1" onMouseDown={(e) => e.preventDefault()}  >
                             Ready?
                         </Button>{' '}
                     </div>
                 </Link>
- 
+
             </Card.Body>
 
         </Card>

@@ -14,19 +14,13 @@ import { action_getData, action_resetData } from "../../REDUX/actions";
 
 
 const List = () => {
- 
+
     // REDUX
     const dispatch = useDispatch();
     const { get_data } = useSelector(state => state.state_data);
 
 
     useEffect(() => {
- 
-        var data_bike_storage = JSON.parse(localStorage.getItem('data_bike_storage'));
- 
-        if (data_bike_storage) {
-            localStorage.removeItem("data_bike_storage");
-        }
 
         fetch("/data_bikes.json", {
             headers: {
@@ -42,7 +36,7 @@ const List = () => {
         });
 
     }, [dispatch]);
- 
+
     return (
 
         <>

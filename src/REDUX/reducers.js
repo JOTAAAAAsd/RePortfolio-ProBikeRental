@@ -62,6 +62,9 @@ const dataReducer = (state = state_init_data, action) => {
     switch (action.type) {
 
         case states.GET_DATA:
+
+            localStorage.removeItem("data_bike_storage");
+            
             return {
                 ...state,
                 get_data: action.payload ,

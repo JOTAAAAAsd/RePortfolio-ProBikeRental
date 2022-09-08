@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 // Bootstrap
 import Col from 'react-bootstrap/Col';
@@ -9,15 +9,18 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import Badge from 'react-bootstrap/Badge';
 
 // Icons
 import { CgNametag } from "react-icons/cg";
 import { BiBarcodeReader } from "react-icons/bi";
 import { MdAlternateEmail, MdNearbyError } from "react-icons/md";
 import { AiFillPhone } from "react-icons/ai";
+import { BsCalendarDate } from "react-icons/bs";
 
 // External File
 import { calculatePrice } from "../../HELPERS/calculatePrice";
+import { dateFormatInit, getDay } from "../../HELPERS/dateFormat";
 
 // Components
 import { ModalConfirm } from "../UI/Modal";
@@ -26,10 +29,9 @@ import { ModalConfirm } from "../UI/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { action_showAlert, action_hideAlert, action_inputValues } from "../../REDUX/actions";
 
+ 
 
 const FormComplete = () => {
-
-    const date = new Date();
 
     // REDUX     
     const dispatch = useDispatch();
@@ -40,25 +42,16 @@ const FormComplete = () => {
 
     // State
     const [useRentBy, setRentBy] = useState(1);
-    const [usePriceTotalRent, setPriceTotalRent] = useState(0);
+    const [useDatePickerValue, setDatePickerValue] = useState(dateFormatInit());
+ 
+    const [usePriceTotalRent, setPriceTotalRent] = useState(getDay(useDatePickerValue) <= 14 ? 10 : 12);
+
+    // console.log(useDatePickerValue)
 
     const [useModalDataDetails, setModalDataDetails] = useState([]);
     const [useIsOpenModal, setIsOpenModal] = useState(false);
 
     var data_bike_storage = JSON.parse(localStorage.getItem('data_bike_storage'));
-
-
-    useEffect(() => {
-
-
-        if (data_bike_storage) {
-            // console.log(data_bike_storage);
-            setRentBy(data_bike_storage.rentBy);
-            setPriceTotalRent(data_bike_storage.price_total);
-        }
-
-    }, []);
-
 
     const onChangeRentBy = (e) => {
         setRentBy(Number.parseInt(e.target.value));
@@ -72,6 +65,18 @@ const FormComplete = () => {
         }));
     }
 
+    const onChangeInputValuesDate = (e) => {
+        // console.log(e.target.value);
+
+        setDatePickerValue(e.target.value);
+
+        calculatePrice(e.target.value, useRentBy, setPriceTotalRent);
+
+        dispatch(action_inputValues({
+            ...input_data,
+            date: e.target.value
+        }));
+    }
 
     const onSubmitForm = (e) => {
         e.preventDefault();
@@ -88,6 +93,7 @@ const FormComplete = () => {
         setIsOpenModal(true);
 
         var current_values = {
+            date: useDatePickerValue,
             firstname: firstname,
             lastname: lastname,
             bike_type: data_bike_storage.bike_type,
@@ -105,15 +111,12 @@ const FormComplete = () => {
             firstname: "",
             lastname: "",
             email: "",
-            phone: ""
+            phone: "",
+            date: dateFormatInit()
         }));
-
     }
 
-
-    // console.log(!data_bike_storage?.bike_type);
-
-    if (!data_bike_storage?.bike_type) {
+    if (!data_bike_storage) {
         window.location.href = "/";
 
     } else {
@@ -186,21 +189,36 @@ const FormComplete = () => {
                                             onChange={onChangeInputValues}
                                         />
                                     </InputGroup>
+ 
+                                    <InputGroup className="mb-3" size="sm">
+                                        <InputGroup.Text id="basic-addon1"><BsCalendarDate style={{ fontSize: "1.5em" }} /></InputGroup.Text>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder="Enter Date"
+                                            aria-label="Date"
+                                            name="useDatePickerValue"
+                                            value={useDatePickerValue}
+                                            onChange={onChangeInputValuesDate}
+                                        />
+                                    </InputGroup>
 
-                                    <Card className="mb-3 card_item_content">
+                                    <Card className="mb-3">
+                                        <div className="text-center">
+                                            <Badge bg="warning" style={{ color: "black" }}>Init date: {useDatePickerValue}</Badge>
+                                        </div>
                                         <Card.Body>
 
-                                            {
-                                                String(date.getDate()).padStart(2, '0') + '/' + String(date.getMonth() + 1).padStart(2, '0') + '/' + date.getFullYear()
-                                            }
+                                            {/* Days {Math.abs(useRentBy - useOperationDays)} */}
 
                                             <Card.Title style={{ fontSize: "1em" }} className="text-center mb-3">
                                                 Your bike will be rented for a period of {useRentBy} day{useRentBy <= 1 ? null : "s"} for a total of ${usePriceTotalRent},00
                                             </Card.Title>
 
                                             <Card.Text>
-                                                <b>Change rent:</b> {useRentBy} {useRentBy <= 1 ? "day" : "days"}
-                                                <Form.Range min={1} max={31} name="useRentBy" onChange={onChangeRentBy} value={useRentBy} onClick={() => calculatePrice(useRentBy, setPriceTotalRent)} />
+                                                <b>Days to rent:</b> {useRentBy} {useRentBy <= 1 ? "day" : "days"}
+
+                                                <Form.Range min={1} max={31} name="useRentBy" onChange={onChangeRentBy} value={useRentBy} onClick={() => calculatePrice(useDatePickerValue, useRentBy, setPriceTotalRent)} />
+
                                             </Card.Text>
                                         </Card.Body>
                                     </Card>
